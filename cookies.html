@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Video Background</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        #bg-video {
+            /* This ensures the video covers the entire container */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .video-controls {
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <video id="bg-video" autoplay muted loop playsinline>
+            <!-- Replace with your own video source -->
+            <source src="homeasset/cookies.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay"></div>
+    </div>
+
+    <div class="content">
+        <h1>Perfect Video Background</h1>
+        <p>This video background is now properly sized to fit the screen without being too large or distorted.</p>
+        <a href="#" class="btn">Get Started</a>
+    </div>
+
+    <div class="video-controls">
+        <button class="control-btn" id="mute-btn">Unmute</button>
+        <button class="control-btn" id="pause-btn">Pause</button>
+    </div>
+
+    <script>
+        // Video controls
+        const video = document.getElementById('bg-video');
+        const muteBtn = document.getElementById('mute-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+
+        // Mute/unmute functionality
+        muteBtn.addEventListener('click', function() {
+            if (video.muted) {
+                video.muted = false;
+                muteBtn.textContent = 'Mute';
+            } else {
+                video.muted = true;
+                muteBtn.textContent = 'Unmute';
+            }
+        });
+
+        // Pause/play functionality
+        pauseBtn.addEventListener('click', function() {
+            if (video.paused) {
+                video.play();
+                pauseBtn.textContent = 'Pause';
+            } else {
+                video.pause();
+                pauseBtn.textContent = 'Play';
+            }
+        });
+
+        // Ensure video plays correctly on mobile devices
+        document.addEventListener('DOMContentLoaded', function() {
+            video.play().catch(function(error) {
+                console.log("Video autoplay failed: ", error);
+                // Fallback: try playing with user interaction
+                document.body.addEventListener('click', function() {
+                    video.play();
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+</html>
